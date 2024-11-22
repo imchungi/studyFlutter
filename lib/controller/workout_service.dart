@@ -27,15 +27,19 @@ class WorkoutService {
     var box = await _box;
     var check = box.values.where((e) => e.title == getTitle);
     if (check.isNotEmpty) {
-      int lastbox = await box.values
-          .where((e) => e.title == getTitle)
-          .last
-          .stepNumber;
+      int lastbox = await box.values.where((e) => e.title == getTitle).last.stepNumber;
       return lastbox;
     } else {
-      return 0;
+      //
+      if (getTitle == 'Squat') {
+        return 36;
+      } else if (getTitle == 'PushUp') {
+        return 7;
+      } else {
+        return 0;
+      }
+      //
     }
-
   }
 
   // getLastWorkout<WorkOut>(getTitle) async {

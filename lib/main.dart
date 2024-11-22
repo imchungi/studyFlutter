@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:pullupfighter/model/mode_model.dart';
+import 'package:pullupfighter/providers/count_provider.dart';
 import 'package:pullupfighter/providers/workout_provider.dart';
 
 import 'model/workout_model.dart';
@@ -23,6 +24,7 @@ void main() async{
   runApp(MultiProvider(
     providers:[
       ChangeNotifierProvider(create: (context) => WorkoutProvider()),
+      ChangeNotifierProvider(create: (context) => CountdownTimerProvider()),
     ]
     ,
       child: const MyApp()));

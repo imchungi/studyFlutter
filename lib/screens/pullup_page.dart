@@ -4,6 +4,8 @@ import 'package:pullupfighter/controller/workout_service.dart';
 import 'package:pullupfighter/model/workout_model.dart';
 import 'package:pullupfighter/providers/workout_provider.dart';
 
+import '../providers/count_provider.dart';
+
 class PullupPage extends StatefulWidget {
   const PullupPage({super.key});
 
@@ -60,14 +62,7 @@ class _PullupPageState extends State<PullupPage> {
   Widget build(BuildContext context) {
     //  final workoutService = context.watch<WorkoutProvider>();
     //WorkoutName _selectedWorkout = WorkoutName.PullUp;
-    // void _changeWorkout() {
-    //   setState(
-    //     () {
-    //       int currentIndex = workoutList.indexOf(_selectedWorkout);
-    //       _selectedWorkout = workoutList[(currentIndex + 1) % workoutList.length];
-    //     },
-    //   );
-    // }
+    final countdownTimerProvider = Provider.of<CountdownTimerProvider>(context);
 
     return Consumer<WorkoutProvider>(builder: (context, workoutService, snapshot) {
       return SafeArea(
@@ -200,7 +195,9 @@ class _PullupPageState extends State<PullupPage> {
                           );
                         }),
                   ),
-                  IconButton(onPressed: (){}, icon: Icon(Icons.volume_up)),
+                  //
+                  _buildControlRow(context, countdownTimerProvider),
+
                   SizedBox(
                     height: 30,
                   ),
@@ -215,7 +212,40 @@ class _PullupPageState extends State<PullupPage> {
     });
   }
 
+
   //
+  Widget _buildControlRow(BuildContext context, CountdownTimerProvider countdownTimerProvider) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: Icon(
+            countdownTimerProvider.isSoundOn ? Icons.volume_up : Icons.volume_off,
+          ),
+          onPressed: countdownTimerProvider.toggleSound,
+        ),
+        IconButton(
+          onPressed: countdownTimerProvider.incrementTime,
+          icon: Icon(
+            Icons.add,
+            size: 24,
+          ),
+        ),
+        Text(
+          'Rest : ${countdownTimerProvider.seconds} sec',
+          style: TextStyle(fontSize: 20),
+        ),
+        IconButton(
+          onPressed: countdownTimerProvider.startTime,
+          icon: Icon(Icons.play_arrow, size: 24),
+        ),
+        IconButton(
+          onPressed: countdownTimerProvider.cancelTimer,
+          icon: Icon(Icons.stop, size: 24),
+        ),
+      ],
+    );
+  }
   Widget _buildSaveButton(BuildContext context, workoutService) {
     return OutlinedButton(
       onPressed: () {
