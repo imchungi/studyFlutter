@@ -16,6 +16,30 @@ class WorkoutService {
     return box.values.toList();
   }
 
+
+  Future<List<WorkOut>> getTitleWorkout(String getTitle) async {
+    var box = await Hive.openBox<WorkOut>('workoutBox');
+    var titleList = box.values.where((e) => e.title == getTitle).toList();
+    var recentTitleList = titleList.reversed.take(15).toList();
+    return recentTitleList.reversed.toList();
+  }
+
+
+  // Future<List<WorkOut>> getTitleWorkout(getTitle) async {
+  //   var box = await _box;
+  //   var titleList = box.values.where((e) => e.title == getTitle).toList();
+  //   var reList = titleList.reversed.take(30).toList();
+  //   var reversedList = reList.reversed.toList();
+  //   return reversedList;
+  // }//titleList.toList();
+
+  // Future<List<WorkOut>> getTitleReverse(String getTitle) async {
+  //   var box = await Hive.openBox<WorkOut>('workoutBox');
+  //   var titleList = box.values.where((e) => e.title == getTitle).toList();
+  //   var recentTitleList = titleList.reversed.take(30).toList();
+  //   return recentTitleList;
+  // }
+
   Future<WorkOut> getLastWorkout(getTitle) async {
     var box = await _box;
     var last = box.values.where((e) => e.title == getTitle).last;
@@ -48,10 +72,18 @@ class WorkoutService {
   //   return last;
   // }
 
-  Future<void> deleteWorkout(int index) async {
+  Future<void> deleteWorkout(DateTime deltime) async {
     var box = await _box;
-    await box.deleteAt(index);
+    var workoutsToDelete = box.values.where((workout) => workout.createdAt == deltime).toList();
+    for (var workout in workoutsToDelete) {
+      await workout.delete();
+    }
   }
+// 역순 정렬 때문에 . 날짜 시간으로 삭제 ;
+  // Future<void> deleteWorkout(int index) async {
+  //   var box = await _box;
+  //   await box.deleteAt(index);
+  // }
 
   Future<void> toggleCompleted(int index, WorkOut item) async {
     var box = await _box;

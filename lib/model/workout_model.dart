@@ -2,9 +2,6 @@ import 'package:hive/hive.dart';
 
 part 'workout_model.g.dart';
 
-
-enum  WorkoutName { PullUp, PushUp, Squat, Lunge }
-
 @HiveType(typeId: 3)
 class WorkOut extends HiveObject {
   @HiveField(0)

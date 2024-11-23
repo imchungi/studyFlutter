@@ -67,9 +67,10 @@ class _PullupPageState extends State<PullupPage> {
     return Consumer<WorkoutProvider>(builder: (context, workoutService, snapshot) {
       return SafeArea(
         child: Container(
+          alignment: Alignment.center,
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: NetworkImage('https://picsum.photos/600/800'), // 배경 이미지 URL
+            image: NetworkImage('https://picsum.photos/600/800?grayscale'), // 배경 이미지 URL
             fit: BoxFit.fill,
           )),
           child: SingleChildScrollView(
@@ -78,6 +79,8 @@ class _PullupPageState extends State<PullupPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  //
+                  _buildControlRow(context, countdownTimerProvider),
                   // OutlinedButton(
                   //     onPressed: () {},
                   //     child: Text(
@@ -145,11 +148,11 @@ class _PullupPageState extends State<PullupPage> {
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: Colors.lightGreen,
+                                    color: Colors.black54,//Color(0xFFCAF76E)
                                     borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: const Color(0xFF8285EE), width: 3),
+                                    border: Border.all(color: Colors.black, width: 3),//const Color(0xFF8285EE)
                                   ),
-                                  child: Text(workoutService.selectedWorkout, style: TextStyle(fontSize: 40)),
+                                  child: Text(workoutService.selectedWorkout, style: TextStyle(fontSize: 45)),
                                   //Text(index.toString(), style: TextStyle(fontSize: 100)),
                                 ),
                               ),
@@ -168,13 +171,13 @@ class _PullupPageState extends State<PullupPage> {
                                       width: 70,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: checkSum[index] ? Colors.blueGrey : Colors.red,
+                                          backgroundColor: checkSum[index] ? Colors.blueGrey : Colors.redAccent,
                                           //shadowColor: Colors.greenAccent,
                                           elevation: 10,
                                           textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                          side: const BorderSide(width: 5),
+                                          side: const BorderSide(width: 3),
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(20.0),
+                                            borderRadius: BorderRadius.circular(15.0),
                                           ),
                                         ),
                                         onPressed: () {
@@ -195,8 +198,7 @@ class _PullupPageState extends State<PullupPage> {
                           );
                         }),
                   ),
-                  //
-                  _buildControlRow(context, countdownTimerProvider),
+
 
                   SizedBox(
                     height: 30,
@@ -215,35 +217,39 @@ class _PullupPageState extends State<PullupPage> {
 
   //
   Widget _buildControlRow(BuildContext context, CountdownTimerProvider countdownTimerProvider) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          icon: Icon(
-            countdownTimerProvider.isSoundOn ? Icons.volume_up : Icons.volume_off,
+    return Card(
+      elevation: 1,
+      color: Colors.black38,//Colors.transparent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: Icon(
+              countdownTimerProvider.isSoundOn ? Icons.volume_up : Icons.volume_off,
+            ),
+            onPressed: countdownTimerProvider.toggleSound,
           ),
-          onPressed: countdownTimerProvider.toggleSound,
-        ),
-        IconButton(
-          onPressed: countdownTimerProvider.incrementTime,
-          icon: Icon(
-            Icons.add,
-            size: 24,
+          IconButton(
+            onPressed: countdownTimerProvider.incrementTime,
+            icon: Icon(
+              Icons.add,
+              size: 24,
+            ),
           ),
-        ),
-        Text(
-          'Rest : ${countdownTimerProvider.seconds} sec',
-          style: TextStyle(fontSize: 20),
-        ),
-        IconButton(
-          onPressed: countdownTimerProvider.startTime,
-          icon: Icon(Icons.play_arrow, size: 24),
-        ),
-        IconButton(
-          onPressed: countdownTimerProvider.cancelTimer,
-          icon: Icon(Icons.stop, size: 24),
-        ),
-      ],
+          Text(
+            'Rest : ${countdownTimerProvider.seconds} sec',
+            style: TextStyle(fontSize: 20),
+          ),
+          IconButton(
+            onPressed: countdownTimerProvider.startTime,
+            icon: Icon(Icons.play_arrow, size: 24),
+          ),
+          IconButton(
+            onPressed: countdownTimerProvider.cancelTimer,
+            icon: Icon(Icons.stop, size: 24),
+          ),
+        ],
+      ),
     );
   }
   Widget _buildSaveButton(BuildContext context, workoutService) {
@@ -254,7 +260,7 @@ class _PullupPageState extends State<PullupPage> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('WorkOut'),
-              content: Text('Do U wnat to save a Data?'),
+              content: Text('save a Data'),
               actions: [
                 TextButton(
                   onPressed: () {

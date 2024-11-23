@@ -12,40 +12,31 @@ import 'screens/fighter_home.dart';
 // flutter pub add hive_flutter
 // flutter packages pub run build_runner build
 
-
-
-void main() async{
+void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(WorkOutAdapter());
   Hive.registerAdapter(ModeSettingAdapter());
   Hive.openBox<ModeSetting>('modeBox');
 
-
-  runApp(MultiProvider(
-    providers:[
-      ChangeNotifierProvider(create: (context) => WorkoutProvider()),
-      ChangeNotifierProvider(create: (context) => CountdownTimerProvider()),
-    ]
-    ,
-      child: const MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => WorkoutProvider()),
+    ChangeNotifierProvider(create: (context) => CountdownTimerProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
+    final themeProvider = Provider.of<WorkoutProvider>(context);
 
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: const ColorScheme.dark(),
-        useMaterial3: true,
-      ),
+      themeMode: themeProvider.themeMode,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       home: const FighterPullup(),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pullupfighter/model/mode_model.dart';
 
@@ -22,7 +23,7 @@ class WorkoutProvider extends ChangeNotifier {
     //초기화 해줄때 . 생성자는 동기화 안되니 따로 만들고 데이터는  notifyListeners(); 해줘야 한다.
     //매처음 기본값 으로 빌드된다음 . 로딩되는 대로 init()으로 변환이 된다.
   }
-    //
+  //
   Future<void> init() async {
     //settings
     // var box = await _modebox;
@@ -36,7 +37,7 @@ class WorkoutProvider extends ChangeNotifier {
     } else {
       _currentIdx = 0;
       _selectedWorkout = 'PullUp';
-       }
+    }
     notifyListeners();
   }
 
@@ -65,6 +66,14 @@ class WorkoutProvider extends ChangeNotifier {
     if (_currentIdx > 0) {
       _currentIdx--;
     }
+    notifyListeners();
+  }
+
+  ThemeMode _themeMode = ThemeMode.dark;
+  ThemeMode get themeMode => _themeMode;
+
+  void toggleTheme() {
+    _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }
